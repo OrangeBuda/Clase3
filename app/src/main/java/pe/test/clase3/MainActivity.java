@@ -52,14 +52,20 @@ public class MainActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
 
         //una buena practica es usar un action en una constante
         //un broadcast recibe un intent
         //Se recibe el string que seria el title del item(accion de apretar el boton)
         //crea objeto de manera anomima sin referencia
-        sendBroadcast(new Intent(MENU_BUTTON_PRESSED_ACTION).putExtra(MENU_BUTTON_PRESSED_EXTRA, item.getTitle().toString()));
+        sendBroadcast(new Intent(MENU_BUTTON_PRESSED_ACTION)
+                //Flag de intent, paquete en estado detenido
+                //Se considera que es un paquete detenido  cuando la han instalado y no la han ejecutado
+                //t odo intent por sistma excluye los paquetes detenidos
+                //Las aplicaciones o paquetes estan en estado detenido solo cuando aun no se abre pro primera vez o se ha forzado el cierre
+                //.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+                .putExtra(MENU_BUTTON_PRESSED_EXTRA, item.getTitle().toString()));
+
         return true;
 
         //para llamar al broadcast receiver en la misma aplicacion
