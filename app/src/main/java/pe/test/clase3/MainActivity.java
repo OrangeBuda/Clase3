@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -27,6 +29,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         registerReceiver(myBroadcastReceiver, intentFilter);
     }
 
@@ -62,14 +66,25 @@ public class MainActivity extends ActionBarActivity {
         //sendBroadcast(new Intent(this , MyBroadcastReceiver.class));
 
     }
-    private class MyBroadcastReceiver extends BroadcastReceiver{
+
+    private class MyBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            String message = "";
+            switch (intent.getAction()) {
+                case Intent.ACTION_POWER_CONNECTED:
+                    message = getString(R.string.power_connected);
+                    break;
+                case Intent.ACTION_POWER_DISCONNECTED:
+                    message = getString(R.string.power_disconnected);
+                    break;
 
+            }
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
 
-    }
+}
 
 
