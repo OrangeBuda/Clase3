@@ -1,6 +1,9 @@
 package pe.test.clase3;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,10 +14,26 @@ public class MainActivity extends ActionBarActivity {
     public final static String MENU_BUTTON_PRESSED_ACTION = "pe.test.clase3.MENU_BUTTON_PRESSED";
     public final static String MENU_BUTTON_PRESSED_EXTRA = "pe.test.clase3.BUTTON_NAME_EXTRA";
 
+    MyBroadcastReceiver myBroadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myBroadcastReceiver = new MyBroadcastReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final IntentFilter intentFilter = new IntentFilter();
+        registerReceiver(myBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(myBroadcastReceiver);
     }
 
     @Override
@@ -39,8 +58,18 @@ public class MainActivity extends ActionBarActivity {
         sendBroadcast(new Intent(MENU_BUTTON_PRESSED_ACTION).putExtra(MENU_BUTTON_PRESSED_EXTRA, item.getTitle().toString()));
         return true;
 
-
-
+        //para llamar al broadcast receiver en la misma aplicacion
+        //sendBroadcast(new Intent(this , MyBroadcastReceiver.class));
 
     }
-}
+    private class MyBroadcastReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    }
+
+    }
+
+
